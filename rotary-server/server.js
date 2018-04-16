@@ -1,13 +1,12 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import logger from './core/logger/app-logger'
+import logger from './logger'
 import morgan from 'morgan'
-import config from './core/config/config.dev'
 import members from './routes/members.route'
-import connectToDb from './db/connect'
+import connectToDb from './db'
 
-const port = config.serverPort
+const port = process.env.PORT
 logger.stream = {
   write: function(message, encoding) {
     logger.info(message)

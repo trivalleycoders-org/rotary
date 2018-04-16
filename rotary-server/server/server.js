@@ -1,10 +1,10 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import logger from './logger'
+import logger from '../logger'
 import morgan from 'morgan'
-import members from './routes/members.route'
-import connectToDb from './db'
+import members from '../routes/members.route'
+import connectToDb from '../db'
 
 const port = process.env.PORT
 logger.stream = {

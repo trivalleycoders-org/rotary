@@ -32,6 +32,13 @@ beforeEach((done) => {
   })
 })
 
+after((done) => {
+  console.log('*********** after ********************')
+  // server.close()
+  process.exit(0)
+
+})
+
 
 describe('DELETE /members/:id', () => {
   it('should remove a member', (done) => {

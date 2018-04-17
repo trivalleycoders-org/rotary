@@ -2,7 +2,6 @@
   "presets": ["env"],
   "passPerPreset": true,
   "plugins": [
-    "babel-plugin-inline-import",
     "transform-runtime"
   ]
 }

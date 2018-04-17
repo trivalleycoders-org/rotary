@@ -1,12 +1,13 @@
 import * as winston from 'winston'
 import * as rotate from 'winston-daily-rotate-file'
-import config from '../config/config.dev'
-import * as fs from 'fs';
+import config from '../config'
+import * as fs from 'fs'
+require('dotenv').config()
 
-const dir = config.logFileDir;
+const dir = process.env.LOG_FILE_DIR
 
 if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+    fs.mkdirSync(dir)
 }
 
 
@@ -17,13 +18,13 @@ let logger = new winston.Logger({
             colorize: true,
         }),
         new winston.transports.DailyRotateFile({
-            filename: config.logFileName,
-            dirname: config.logFileDir,
+            filename: process.env.LOG_FILE_NAME,
+            dirname: dir,
             maxsize: 20971520, //20MB
             maxFiles: 25,
             datePattern: '.dd-MM-yyyy'
         })
     ]
-});
+})
 
-export default logger;
+export default logger

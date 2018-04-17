@@ -3,6 +3,7 @@ import express from 'express'
 const router = express.Router()
 import Member from '../models/member'
 import { isValidObjectID } from '../db/utils'
+import { red, blue } from '../log'
 
 router.get('/', async (req, res) => {
   try {
@@ -49,19 +50,21 @@ router.delete('/:id', async (req, res) => {
     if (!member) {
       return res.status(404).send()
     }
-    res.send(member)
+    res.send({member})
   } catch (e) {
     res.status(400).send()
   }
 
 })
 
-router.patch('/todos/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   const id = req.params.id
   const body = req.body
-  log('body', body, 'orange')
+  blue('body', body)
 
-  if (!ObjectID.isValid(id)) {
+
+  // red('id', id)
+  if (!isValidObjectID(id)) {
     return res.status(404).send()
   }
 
@@ -74,7 +77,7 @@ router.patch('/todos/:id', async (req, res) => {
   } catch (e) {
     res.status(400).send()
   }
-  
+
 })
 
 

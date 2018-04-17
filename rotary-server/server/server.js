@@ -6,7 +6,6 @@ import morgan from 'morgan'
 import members from '../routes/members.route'
 import connectToDb from '../db'
 
-const port = process.env.PORT
 logger.stream = {
   write: function(message, encoding) {
     logger.info(message)
@@ -15,7 +14,9 @@ logger.stream = {
 
 connectToDb()
 
-const app = express()
+export const app = express()
+const port = process.env.PORT
+
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -31,3 +32,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   logger.info('server started - ', port)
 })
+
+export default app

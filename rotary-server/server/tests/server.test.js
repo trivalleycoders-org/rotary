@@ -1,6 +1,11 @@
-const expect = require('expect')
-const request = require('supertest')
-const { Member } = require('../../models/member')
+
+import expect from 'expect'
+import request from 'supertest'
+import  Member from  '../../models/member'
+import { ObjectID } from 'mongodb'
+import logger from '../../logger'
+import 'babel-polyfill'
+import app from '../server.js'
 
 const members = [
   {
@@ -13,15 +18,20 @@ const members = [
 ]
 
 beforeEach((done) => {
-  Todo.remove({}).then(() => {
-    return Todo.insertMany(todos)
-  }).then(() => done())
+  Member.remove({})
+  .then(() => {
+    return Member.insertMany(members)
+  })
+  .then(() => done())
+  .catch((error) => {
+    logger.error(error)
+  })
 })
 
 describe('GET /members', () => {
   it('should get all members', (done) => {
-    request(app).get('/todos').expect(200).expect((res) => {
-      expect(res.body.todos.length).toBe(2)
+    request(app).get('/members').expect(200).expect((res) => {
+      expect(res.body.members.length).toBe(2)
     }).end(done)
   })
 })

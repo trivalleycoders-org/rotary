@@ -1,9 +1,6 @@
 {
+  "presets": ["env"],
   "passPerPreset": true,
-  "presets": [
-    "es2015",
-    "stage-0"
-  ],
   "plugins": [
     "babel-plugin-inline-import",
     "transform-runtime"

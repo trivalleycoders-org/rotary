@@ -3,7 +3,7 @@ import express from 'express'
 const router = express.Router()
 import Member from '../models/member'
 import { isValidObjectID } from '../db/utils'
-import { red, blue } from '../log'
+// import { red, blue } from '../log'
 
 router.get('/', async (req, res) => {
   try {

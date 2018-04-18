@@ -31,9 +31,18 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const member = await new Member({firstName: req.body.firstName})
+  const b = req.body
+  const m = await new Member()
+  m.firstName = b.firstName
+  m.lastName = b.lastName
+  m.email = b.email
+  m.comments.push(b.comments)
+  m.phone = b.phone
+  console.log(b.roles)
+  m.roles = b.roles
+
   try {
-    let doc = await member.save()
+    let doc = await m.save()
     res.send(doc)
   } catch (e) {
     res.status(400).send(e)

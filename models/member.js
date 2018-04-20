@@ -7,7 +7,13 @@ import mongoose from 'mongoose'
 //
 // let Member = mongoose.model('Member', memberSchema)
 
-let roleSchema = new mongoose.Schema({roleId: String, preferred: Boolean})
+let roleSchema = new mongoose.Schema({
+  roleId: String,
+  notPreferred: {
+    type: Boolean,
+    default: false,
+  }
+})
 
 let phoneSchema = new mongoose.Schema({
   phoneType: {
@@ -46,8 +52,8 @@ const memberSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  phone: [phoneSchema],
-  roles: [roleSchema]
+    phone: [phoneSchema],
+    roles: [roleSchema]
 })
 
 let Member = mongoose.model('Member', memberSchema)

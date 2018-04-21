@@ -31,17 +31,15 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const b = req.body
-  const m = await new Member()
-  m.firstName = b.firstName
-  m.lastName = b.lastName
-  m.email = b.email
-  m.comments.push(b.comments)
-  m.phone = b.phone
-  console.log(b.roles)
-  m.roles = b.roles
-
   try {
+    const b = req.body
+    const m = await new Member()
+    m.firstName = b.firstName
+    m.lastName = b.lastName
+    m.email = b.email
+    m.comments.push(...b.comments)
+    m.phone.push(...b.phone)
+    m.avoidRoles.push(...b.avoidRoles)
     let doc = await m.save()
     res.send(doc)
   } catch (e) {
@@ -67,18 +65,14 @@ router.delete('/:id', async (req, res) => {
 })
 
 router.patch('/:id', async (req, res) => {
-  const id = req.params.id
-  const body = req.body
-  blue('body', body)
-
-
-  // red('id', id)
-  if (!isValidObjectID(id)) {
-    return res.status(404).send()
-  }
-
   try {
+    const id = req.params.id
+    if (!isValidObjectID(id)) {
+      return res.status(404).send()
+    }
+    const body = req.body
     const member = await Member.findByIdAndUpdate(id, { $set: body }, { new: true })
+
     if (!member) {
       return res.status(404).send()
     }

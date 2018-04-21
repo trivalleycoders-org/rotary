@@ -3,8 +3,10 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import logger from '../logger'
 import morgan from 'morgan'
-import members from '../routes/members.route'
 import connectToDb from '../db'
+import members from '../routes/members.route'
+import roles from '../routes/roles.route'
+
 
 logger.stream = {
   write: function(message, encoding) {
@@ -23,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('dev', {'stream': logger.stream}))
 
 app.use('/members', members)
+app.use('/roles', roles)
 
 //Index route
 app.get('/', (req, res) => {

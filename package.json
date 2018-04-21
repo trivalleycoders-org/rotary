@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nodemon server/server.js --exec babel-node",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --compilers js:babel-core/register server/**/*.test.js ",
+    
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
     "serve": "node dist/server.js",
     "start_babel": "babel-node server/server.js --preset=babel-preset-es2015",

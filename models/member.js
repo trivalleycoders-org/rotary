@@ -23,7 +23,6 @@ let phoneSchema = new mongoose.Schema({
   phoneNumber: {
     type: String
   }
-
 })
 
 const memberSchema = new mongoose.Schema({
@@ -53,21 +52,9 @@ const memberSchema = new mongoose.Schema({
     default: false
   },
     phone: [phoneSchema],
-    roles: [roleSchema]
+    avoidRoles: [],
 })
 
 let Member = mongoose.model('Member', memberSchema)
-
-Member.getAll = () => {
-  return Member.find({})
-}
-
-Member.addMember = (memberToAdd) => {
-  return Member.save()
-}
-
-Member.removeMember = (firstName) => {
-  return Member.remove({firstName: firstName})
-}
 
 export default Member

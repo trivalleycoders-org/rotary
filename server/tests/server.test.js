@@ -15,9 +15,8 @@ beforeEach(function() {
   console.log('before every test in every file')
 })
 
-// describe('Some test', () => {
-//   it('should = 1', (done) => {
-//     expect(1).toBe(1)
-//   })
-//   done()
-// })
+describe('Some test', () => {
+  it('should = 1', () => {
+    expect(1).toBe(1)
+  })
+})

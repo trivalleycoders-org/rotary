@@ -1,5 +1,5 @@
 import Mongoose from 'mongoose'
-import { greenf, redf } form '../log'
+import { greenf, redf } form '../logger'
 
 // import config from '../core/config'
 

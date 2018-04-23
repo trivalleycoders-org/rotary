@@ -5,7 +5,7 @@ import 'babel-polyfill'
 import app from '../server.js'
 import  Member from  '../../models/member'
 import { ObjectID } from 'mongodb'
-import { red } from '../../log'
+import { red } from '../../logger'
 
 // import { blue, green } from '../../log/'
 const testMembers = [

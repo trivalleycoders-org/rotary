@@ -1,5 +1,5 @@
 import Mongoose from 'mongoose'
-import { greenf, redf } from '../log'
+import { greenf, redf } from '../logger'
 // import config from './config'
 
 Mongoose.Promise = global.Promise

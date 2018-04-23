@@ -1,4 +1,4 @@
-import { green } from '../log'
+import { green } from '../logger'
 require('dotenv').config()
 
 const env = process.env.NODE_ENV || 'development'

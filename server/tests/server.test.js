@@ -7,7 +7,7 @@ import { app, closeDb } from '../server.js'
 // import { ObjectID } from 'mongodb'
 
 
-import { blue, green } from '../../log/'
+import { blue, green } from '../../logger/'
 
 beforeAll(() => {
   green('beforeAll')

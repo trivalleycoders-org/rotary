@@ -1,18 +1,12 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import logger from '../logger'
 import morgan from 'morgan'
+import { green } from '../log'
 import connectToDb from '../db'
 import members from '../routes/members.route'
 import roles from '../routes/roles.route'
 
-
-logger.stream = {
-  write: function(message, encoding) {
-    logger.info(message)
-  }
-}
 
 connectToDb()
 
@@ -22,7 +16,7 @@ const port = process.env.PORT
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(morgan('dev', {'stream': logger.stream}))
+app.use(morgan('dev'))
 
 app.use('/members', members)
 app.use('/roles', roles)
@@ -33,7 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  logger.info('server started - ', port)
+  green('server started - ', port)
 })
 
 export default app

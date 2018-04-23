@@ -11,7 +11,6 @@ import { blue, green } from '../../logger/'
 
 beforeAll(() => {
   green('beforeAll')
-  // update
 })
 
 beforeEach(function() {

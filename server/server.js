@@ -2,10 +2,11 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
-import { green } from '../log'
+import { greenf } from '../log'
 import connectToDb from '../db'
 import members from '../routes/members.route'
 import roles from '../routes/roles.route'
+import config from '../config'
 
 
 connectToDb()
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  green('server started - ', port)
+  greenf('server started - ', port)
 })
 
 export default app

@@ -2,17 +2,25 @@
 // import expect from 'expect'
 // import request from 'supertest'
 import 'babel-polyfill'
-import app from '../server.js'
+import { app, closeDb } from '../server.js'
 // import  Member from  '../../models/member'
 // import { ObjectID } from 'mongodb'
 
 
-// import { blue, green } from '../../log/'
+import { blue, green } from '../../log/'
 
-console.log('test')
+beforeAll(() => {
+  green('beforeAll')
+})
 
 beforeEach(function() {
+  green('beforeEach')
   console.log('before every test in every file')
+})
+
+afterAll(() => {
+  green('afterAll')
+  closeDb()
 })
 
 describe('Some test', () => {

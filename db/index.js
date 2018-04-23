@@ -3,7 +3,8 @@ import { greenf, redf } from '../log'
 // import config from './config'
 
 Mongoose.Promise = global.Promise
-const connectToMongo = async () => {
+
+export const connectToMongo = async () => {
   try {
     await Mongoose.connect(process.env.MONGODB_URI)
     greenf('Connected to mongo!!!')
@@ -13,4 +14,9 @@ const connectToMongo = async () => {
   }
 }
 
-export default connectToMongo
+export const disconnectFromMongo = async () => {
+  const close = Mongoose.close()
+}
+
+
+export default { connectToMongo }

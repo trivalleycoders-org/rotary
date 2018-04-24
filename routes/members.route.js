@@ -3,7 +3,7 @@ import express from 'express'
 const router = express.Router()
 import Member from '../models/member'
 import { isValidObjectID } from '../db/utils'
-// import { red, blue } from '../logger'
+import { red, blue, yellow } from '../logger'
 
 router.get('/', async (req, res) => {
   try {
@@ -33,16 +33,25 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const b = req.body
+    // yellow('post:body', b)
     const m = await new Member()
+    // yellow('firstName', b.firstName)
     m.firstName = b.firstName
+    // yellow('lastName', b.lastName)
     m.lastName = b.lastName
+    // yellow('email', b.email)
     m.email = b.email
-    m.comments.push(...b.comments)
-    m.phone.push(...b.phone)
-    m.avoidRoles.push(...b.avoidRoles)
+    // yellow('comments', b.comments)
+    b.comments && m.comments.push(...b.comments)
+    // yellow('phone', b.phone)
+    b.phone && m.phone.push(...b.phone)
+    // yellow('rolws', b.avoidRoles)
+    b.avoidRoles && m.avoidRoles.push(...b.avoidRoles)
+    // yellow('after roles')
     let doc = await m.save()
     res.send(doc)
   } catch (e) {
+    red('members.route: post', e)
     res.status(400).send(e)
   }
 })

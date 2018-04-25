@@ -3,7 +3,7 @@ import express from 'express'
 const router = express.Router()
 import Member from '../models/member'
 import { isValidObjectID } from '../db/utils'
-// import { red, blue } from '../log'
+import { red, blue, yellow } from '../logger'
 
 router.get('/', async (req, res) => {
   try {
@@ -31,20 +31,27 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const b = req.body
-  const m = await new Member()
-  m.firstName = b.firstName
-  m.lastName = b.lastName
-  m.email = b.email
-  m.comments.push(b.comments)
-  m.phone = b.phone
-  console.log(b.roles)
-  m.roles = b.roles
-
   try {
+    const b = req.body
+    // yellow('post:body', b)
+    const m = await new Member()
+    // yellow('firstName', b.firstName)
+    m.firstName = b.firstName
+    // yellow('lastName', b.lastName)
+    m.lastName = b.lastName
+    // yellow('email', b.email)
+    m.email = b.email
+    // yellow('comments', b.comments)
+    b.comments && m.comments.push(...b.comments)
+    // yellow('phone', b.phone)
+    b.phone && m.phone.push(...b.phone)
+    // yellow('rolws', b.avoidRoles)
+    b.avoidRoles && m.avoidRoles.push(...b.avoidRoles)
+    // yellow('after roles')
     let doc = await m.save()
     res.send(doc)
   } catch (e) {
+    red('members.route: post', e)
     res.status(400).send(e)
   }
 })
@@ -67,18 +74,14 @@ router.delete('/:id', async (req, res) => {
 })
 
 router.patch('/:id', async (req, res) => {
-  const id = req.params.id
-  const body = req.body
-  blue('body', body)
-
-
-  // red('id', id)
-  if (!isValidObjectID(id)) {
-    return res.status(404).send()
-  }
-
   try {
+    const id = req.params.id
+    if (!isValidObjectID(id)) {
+      return res.status(404).send()
+    }
+    const body = req.body
     const member = await Member.findByIdAndUpdate(id, { $set: body }, { new: true })
+
     if (!member) {
       return res.status(404).send()
     }

@@ -1,30 +1,37 @@
-import * as winston from 'winston'
-import * as rotate from 'winston-daily-rotate-file'
-import config from '../config'
-import * as fs from 'fs'
-require('dotenv').config()
+import chalk from 'chalk'
+const log = console.log
 
-const dir = process.env.LOG_FILE_DIR
-
-if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir)
+const checkValue = (value) => {
+  if (!value) {
+    return ''
+  } else {
+    return value
+  }
 }
 
+export const red = (message, value) => {
+   log(chalk.bgRed(` ${message} `), checkValue(value))
+}
+export const green = (message, value) => {
+   log(chalk.bgGreen(` ${message} `), checkValue(value))
+}
+export const yellow = (message, value) => {
+   log(chalk.bgYellow(` ${message} `), checkValue(value))
+}
+export const blue = (message, value) => {
+   log(chalk.bgBlue(` ${message} `), checkValue(value))
+}
 
-let logger = new winston.Logger({
-    level: 'info',
-    transports: [
-        new (winston.transports.Console)({
-            colorize: true,
-        }),
-        new winston.transports.DailyRotateFile({
-            filename: process.env.LOG_FILE_NAME,
-            dirname: dir,
-            maxsize: 20971520, //20MB
-            maxFiles: 25,
-            datePattern: '.dd-MM-yyyy'
-        })
-    ]
-})
-
-export default logger
+export const redf = (message, value) => {
+   log(chalk.red(` ${message} `), checkValue(value))
+}
+export const greenf = (message, value) => {
+   log(chalk.green(` ${message} `), checkValue(value))
+}
+export const yellowf = (message, value) => {
+   log(chalk.yellow(` ${message} `), checkValue(value))
+}
+export const bluef = (message, value) => {
+   log(chalk.blue(` ${message} `), checkValue(value))
+}
+export default { red, green, yellow, blue, redf, greenf, yellowf, bluef }

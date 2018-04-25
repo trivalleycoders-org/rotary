@@ -1,36 +1,36 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
-import logger from '../logger'
 import morgan from 'morgan'
+import { green, greenf, yellow } from '../logger'
+import { connectToMongo, disconnectFromMongo } from '../db'
 import members from '../routes/members.route'
-import connectToDb from '../db'
+import roles from '../routes/roles.route'
+import config from '../config'
 
-logger.stream = {
-  write: function(message, encoding) {
-    logger.info(message)
-  }
-}
-
-connectToDb()
-
-export const app = express()
+// green('node env=', process.env.NODE_ENV)
+const app = express()
 const port = process.env.PORT
 
+// if (!process.env.NODE_ENV) {
+//   startServer()
+// }
+
+green('app is loading')
+connectToMongo()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(morgan('dev', {'stream': logger.stream}))
-
+app.use(morgan('dev'))
 app.use('/members', members)
-
-//Index route
+app.use('/roles', roles)
 app.get('/', (req, res) => {
   res.send('Invalid endpoint!')
 })
 
 app.listen(port, () => {
-  logger.info('server started - ', port)
+  greenf('server started - ', port)
 })
+
 
 export default app

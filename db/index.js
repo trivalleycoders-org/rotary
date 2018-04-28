@@ -1,6 +1,5 @@
 import Mongoose from 'mongoose'
 import { yellowf, greenf, redf, yellow } from '../logger'
-// import config from './config'
 
 Mongoose.Promise = global.Promise
 
@@ -36,11 +35,16 @@ export const connectToMongo = () => {
       readyState()
       redf('Could not connect to MongoDB', e)
     })
+
 }
 
-export const disconnectFromMongo = async () => {
-  const close = Mongoose.close()
-}
+// export const disconnectFromMongo = async () => {
+//   const close = Mongoose.close()
+// }
+
+// export const dropCollection = (collectionName) => {
+//   connection.dropCollection(collectionName)
+// }
 
 
 export default { connectToMongo }

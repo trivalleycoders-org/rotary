@@ -1,31 +1,30 @@
 
 // import expect from 'expect'
-import request from 'supertest'
 import 'babel-polyfill'
-// import { app, closeDb } from '../server.js'
-import  Member from  '../../models/member'
+import request from 'supertest'
+import { expect } from 'chai'
+// var expect = require('chai').expect
 import { ObjectID } from 'mongodb'
-import { yellow, blue, green, red } from '../../logger/'
-import app from '../server'
-// import { disconnectFromMongo } from '../../db'
+import  Member from  '../models/member'
+import app from '../server/server'
 import { twoTestMembers } from './test-users'
 import { oneTestMember } from './test-users'
 import { fillMember } from './member-utils'
+// tmp
+import { yellow, blue, green, red } from '../logger/'
 
-beforeAll(() => {
-  // console.clear()
-  // green('beforeAll')
+
+before(() => {
   // await app.startServer()
-  // yellow('app', app())
   // app = await require('../server')
 })
 
-beforeEach(async (done) => {
+beforeEach(async () => {
   // green('beforeEach')
   try {
     const a = await Member.remove({})
     yellow('a: Member.remove', a)
-    done()
+    // done()
   }
   catch (e) {
     red('ERROR: beforeEach: ', e)
@@ -33,32 +32,26 @@ beforeEach(async (done) => {
   }
 })
 
-afterAll(() => {
-  // green('afterAll')
-  // closeDb()
+after(() => {
   // process.exit(0)
 })
 
 describe('Some test', () => {
-  // yellow('Some test')
   it('should = 1', () => {
-    // yellow('*****************************************************')
-    expect(1).toBe(1)
+    // expect(1).to.equal(1)
+    expect('some test').to.be.a('string');
   })
 })
 
 describe('GET /members', async () => {
   const m = await new Member()
   const member = fillMember(m, oneTestMember[0])
-  yellow('*************member*************', member)
 
-  // const doc = await Member.populate(oneTestMember)
   // should get all members
   it('should get all members', (done) => {
-
     request(app).get('/members').expect(200).expect((res) => {
       yellow('res.body', res.body)
-      expect(res.body.members.length).toBe(2)
+      expect(res.body.members.length).to.equal(2)
     }).end(done)
   })
 })

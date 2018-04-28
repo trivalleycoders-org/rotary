@@ -1,4 +1,4 @@
-import  Member from  '../../models/member'
+import  Member from  '../models/member'
 import { ObjectID } from 'mongodb'
 
 export const twoTestMembers = [

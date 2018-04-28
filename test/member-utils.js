@@ -1,4 +1,4 @@
-import { yellow, blue, green, red } from '../../logger/'
+import { yellow, blue, green, red } from '../logger/'
 
 export const fillMember = (model, data) => {
   let m = model

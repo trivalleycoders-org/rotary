@@ -23,15 +23,15 @@ export const blue = (message, value) => {
 }
 
 export const redf = (message, value) => {
-   log(chalk.red(` ${message} `), checkValue(value))
+   log(chalk.red(`${message}`), checkValue(value))
 }
 export const greenf = (message, value) => {
-   log(chalk.green(` ${message} `), checkValue(value))
+   log(chalk.green(`${message}`), checkValue(value))
 }
 export const yellowf = (message, value) => {
-   log(chalk.yellow(` ${message} `), checkValue(value))
+   log(chalk.yellow(`${message}`), checkValue(value))
 }
 export const bluef = (message, value) => {
-   log(chalk.blue(` ${message} `), checkValue(value))
+   log(chalk.blue(`${message}`), checkValue(value))
 }
 export default { red, green, yellow, blue, redf, greenf, yellowf, bluef }

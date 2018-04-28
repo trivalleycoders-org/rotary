@@ -57,4 +57,5 @@ const memberSchema = new mongoose.Schema({
 
 let Member = mongoose.model('Member', memberSchema)
 
+
 export default Member

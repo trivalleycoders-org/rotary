@@ -16,7 +16,7 @@ const port = process.env.PORT
 //   startServer()
 // }
 
-green('app is loading')
+// green('app is loading')
 connectToMongo()
 app.use(cors())
 app.use(bodyParser.json())

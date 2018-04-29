@@ -1,14 +1,7 @@
 import 'babel-polyfill'
 import { yellow, blue, green, red } from '../logger/'
-import {ObjectID} from 'mongodb'
+import { ObjectID } from 'mongodb'
 import Member from '../models/member'
-// import Mongoose from 'mongoose'
-
-
-// Mongoose.Promise = global.Promise
-
-
-// import {yellow, blue, green, red, greenf} from '../logger/'
 
 export const fillMember = (model, data) => {
   let m = model
@@ -23,41 +16,55 @@ export const fillMember = (model, data) => {
 }
 
 const makeUsers = (num) => {
-
   let users = []
   for (let i=0; i<num; i++) {
-    const firstName = `First-${num}`
-    const lastName = `Last-${num}`
-    const email = `${firstName}@${lastName}.com`
-    const phone = {
+    let firstName = `First-${i}`
+    let lastName = `Last-${i}`
+    let email = `${firstName}@${lastName}.com`
+    let phone = {
       phoneType: 'Mobile',
-      phoneNumber: `${num}${num}${num}-${num}${num}${num}-${num}${num}${num}${num}`
+      phoneNumber: `${i}${i}${i}-${i}${i}${i}-${i}${i}${i}${i}`
     }
-    const user = {
+    let user = {
       _id: new ObjectID(),
       firstName,
       lastName,
-      comments: [`comment 1 (${num})`, `comment 2 (${num})`],
+      comments: [`comment 1 (${i})`, `comment 2 (${i})`],
       email,
       phone,
     }
     users.push(user)
   }
-
-  // console.log('users', users)
   return users
 }
+
 export const insertMembers = async (num) => {
   try {
-    const users = makeUsers(num)
+    const users = await makeUsers(num)
     let result = await Member.insertMany(users)
-    console.log('result', result)
   }
   catch (e) {
     console.log('ERROR inserting members', e)
   }
 }
 
+export const getMembers = async (num) => {
+  try {
+    return makeUsers(num)
 
+  }
+  catch (e) {
+    console.log('ERROR inserting members', e)
+  }
+}
 
-export default { fillMember, insertMembers }
+export const clearMembers = async () => {
+  try {
+    const a = await Member.remove({})
+  }
+  catch (e) {
+    red('ERROR: beforeEach: ', e)
+  }
+}
+
+export default { fillMember, insertMembers, getMembers, clearMembers }

@@ -1,9 +1,11 @@
+import 'babel-polyfill'
 import { yellow, blue, green, red } from '../logger/'
 import {ObjectID} from 'mongodb'
-import Mongoose from 'mongoose'
+import Member from '../models/member'
+// import Mongoose from 'mongoose'
 
 
-Mongoose.Promise = global.Promise
+// Mongoose.Promise = global.Promise
 
 
 // import {yellow, blue, green, red, greenf} from '../logger/'
@@ -28,7 +30,7 @@ const makeUsers = (num) => {
     const lastName = `Last-${num}`
     const email = `${firstName}@${lastName}.com`
     const phone = {
-      phoneType: `Mobile-${num}`,
+      phoneType: 'Mobile',
       phoneNumber: `${num}${num}${num}-${num}${num}${num}-${num}${num}${num}${num}`
     }
     const user = {
@@ -42,10 +44,18 @@ const makeUsers = (num) => {
     users.push(user)
   }
 
-  console.log('users', users)
+  // console.log('users', users)
+  return users
 }
-export const insertMembers = (num) => {
-  makeUsers(num)
+export const insertMembers = async (num) => {
+  try {
+    const users = makeUsers(num)
+    let result = await Member.insertMany(users)
+    console.log('result', result)
+  }
+  catch (e) {
+    console.log('ERROR inserting members', e)
+  }
 }
 
 

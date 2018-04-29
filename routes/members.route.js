@@ -32,24 +32,26 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const b = req.body
-    // yellow('post:body', b)
-    const m = await new Member()
-    // yellow('firstName', b.firstName)
-    m.firstName = b.firstName
-    // yellow('lastName', b.lastName)
-    m.lastName = b.lastName
-    // yellow('email', b.email)
-    m.email = b.email
-    // yellow('comments', b.comments)
-    b.comments && m.comments.push(...b.comments)
-    // yellow('phone', b.phone)
-    b.phone && m.phone.push(...b.phone)
-    // yellow('rolws', b.avoidRoles)
-    b.avoidRoles && m.avoidRoles.push(...b.avoidRoles)
-    // yellow('after roles')
-    let doc = await m.save()
-    res.send(doc)
+    const members = req.body
+    // blue('members.length', members.length)
+
+    const membersAdded = await Promise.all(members.map(async (m) => {
+      // blue('m', m)
+      let nm = new Member()
+      nm.firstName = m.firstName
+      nm.lastName = m.lastName
+      nm.email = m.email
+      m.comments && nm.comments.push(...m.comments)
+      m.phone && nm.phone.push(...m.phone)
+      m.avoidRoles && nm.avoidRoles.push(...m.avoidRoles)
+      // blue('nm', nm)
+      let doc = await nm.save()
+      // blue('doc', doc)
+      return nm
+    }))
+
+    // blue('BEFORE SEND: membersAdded.length', membersAdded)
+    res.send(membersAdded)
   } catch (e) {
     red('members.route: post', e)
     res.status(400).send(e)

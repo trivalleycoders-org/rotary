@@ -1,6 +1,5 @@
 import Mongoose from 'mongoose'
-import { yellowf, greenf, redf } from '../logger'
-// import config from './config'
+import { yellowf, greenf, redf, yellow } from '../logger'
 
 Mongoose.Promise = global.Promise
 
@@ -24,23 +23,19 @@ const readyState = () => {
   }
 }
 
-export const connectToMongo = async () => {
-  try {
+export const connectToMongo = () => {
     readyState()
     // await Mongoose.connect(process.env.MONGODB_URI)
     Mongoose.connect(process.env.MONGODB_URI)
-    readyState()
-    greenf('Connected to mongo!!!')
-  }
-  catch (err) {
-    readyState()
-    redf('Could not connect to MongoDB')
-  }
-}
+    .then(() => {
+      readyState()
+      greenf('Connected to mongo!!!')
+    })
+    .catch((e) => {
+      readyState()
+      redf('Could not connect to MongoDB', e)
+    })
 
-export const disconnectFromMongo = async () => {
-  const close = Mongoose.close()
 }
-
 
 export default { connectToMongo }

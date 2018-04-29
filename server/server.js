@@ -2,8 +2,8 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
-import { green, greenf, yellow } from '../logger'
-import { connectToMongo, disconnectFromMongo } from '../db'
+import {green, greenf, yellow} from '../logger'
+import {connectToMongo, disconnectFromMongo} from '../db'
 import members from '../routes/members.route'
 import roles from '../routes/roles.route'
 import config from '../config'
@@ -12,12 +12,10 @@ import config from '../config'
 const app = express()
 const port = process.env.PORT
 
-// if (!process.env.NODE_ENV) {
-//   startServer()
-// }
+if (!process.env.NODE_ENV === 'test') {
+  connectToMongo()
+}
 
-green('app is loading')
-connectToMongo()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -31,6 +29,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   greenf('server started - ', port)
 })
-
 
 export default app

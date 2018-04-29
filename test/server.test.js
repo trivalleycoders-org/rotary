@@ -7,10 +7,12 @@ import Member from '../models/member'
 import app from '../server/server'
 import {twoTestMembers} from './test-users'
 import {oneTestMember} from './test-users'
-import {fillMember} from './member-utils'
-import {connectToMongo} from '../db'
-import {dropCollection} from '../db'
+import {fillMember, insertMembers} from './member-utils'
 import Mongoose from 'mongoose'
+
+
+Mongoose.Promise = global.Promise
+
 require('dotenv').config()
 // tmp-start
 import {yellow, blue, green, red, greenf} from '../logger/'
@@ -22,6 +24,7 @@ const setTimeoutPromise = util.promisify(setTimeout)
 before((done) => {
   Mongoose.connect(process.env.MONGODB_URI).then((conn) => {
     greenf('connected to mongo')
+    insertMembers(3)
     done()
   })
 })
@@ -35,7 +38,10 @@ beforeEach(async () => {
   //   red('ERROR: beforeEach: ', e)
   // }
 })
-after(() => {
+after(async () => {
+  await Mongoose.connection.close().then(() => {
+    yellow('Mongoose connection closed')
+  })
   if (!process.env.WATCH) {
     setTimeoutPromise(1900).then((value) => {
       yellow('exit')
@@ -50,12 +56,14 @@ describe('Some test', () => {
   })
 })
 
-describe.skip('GET /members', async () => {
+describe('GET /members', async () => {
+  yellow('GET')
   const m = await new Member()
-  const member = fillMember(m, oneTestMember[0])
+  const member = await fillMember(m, oneTestMember[0])
+  const a = await member.save()
 
   // should get all members
-  it.skip('should get all members', (done) => {
+  it('should get all members', (done) => {
     request(app).get('/members').expect(200).expect((res) => {
 
       expect(res.body.members.length).to.equal(2)

@@ -38,13 +38,4 @@ export const connectToMongo = () => {
 
 }
 
-// export const disconnectFromMongo = async () => {
-//   const close = Mongoose.close()
-// }
-
-// export const dropCollection = (collectionName) => {
-//   connection.dropCollection(collectionName)
-// }
-
-
 export default { connectToMongo }

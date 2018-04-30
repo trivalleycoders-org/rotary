@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
     // blue('BEFORE SEND: membersAdded.length', membersAdded)
     res.send(membersAdded)
   } catch (e) {
-    red('members.route: post', e)
+    // red('members.route: post', e)
     res.status(400).send(e)
   }
 })
@@ -72,7 +72,6 @@ router.delete('/:id', async (req, res) => {
   } catch (e) {
     res.status(400).send()
   }
-
 })
 
 router.patch('/:id', async (req, res) => {

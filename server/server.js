@@ -12,7 +12,9 @@ import config from '../config'
 const app = express()
 const port = process.env.PORT
 
-if (!process.env.NODE_ENV === 'test') {
+
+if (process.env.NODE_ENV !== 'test') {
+  yellow('env', process.env.NODE_ENV)
   connectToMongo()
 }
 

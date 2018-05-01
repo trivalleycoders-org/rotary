@@ -31,29 +31,43 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+
   try {
     const members = req.body
-    // blue('members.length', members.length)
 
-    const membersAdded = await Promise.all(members.map(async (m) => {
-      // blue('m', m)
-      let nm = new Member()
-      nm.firstName = m.firstName
-      nm.lastName = m.lastName
-      nm.email = m.email
-      m.comments && nm.comments.push(...m.comments)
-      m.phone && nm.phone.push(...m.phone)
-      m.avoidRoles && nm.avoidRoles.push(...m.avoidRoles)
-      // blue('nm', nm)
-      let doc = await nm.save()
-      // blue('doc', doc)
-      return nm
+    let membersToAdd = []
+    if (!Array.isArray(members) && typeof members === 'object') {
+      membersToAdd.push(members)
+    } else if (Array.isArray(members)) {
+      membersToAdd = await Promise.all(members.map(async (m) => {
+        // blue('m', m)
+        let nm = new Member()
+        nm.firstName = m.firstName
+        nm.lastName = m.lastName
+        nm.email = m.email
+        m.comments && nm.comments.push(...m.comments)
+        m.phone && nm.phone.push(...m.phone)
+        m.avoidRoles && nm.avoidRoles.push(...m.avoidRoles)
+        // blue('nm', nm)
+        // blue('doc', doc)
+        yellow('nm', nm)
+        return nm
+      }))
+    } else {
+      res.status(400).send()
+    }
+    // Seems Mongoose does not have a method for saving multiple documents at the same time. Could use native driver in the future
+    yellow('POST', membersToAdd)
+    membersAdded = await Promise.all(membersToAdd.map(async (m) => {
+      return doc = await m.save()
     }))
 
-    // blue('BEFORE SEND: membersAdded.length', membersAdded)
+
+
+    blue('BEFORE SEND: membersAdded.length', membersAdded.length)
     res.send(membersAdded)
   } catch (e) {
-    // red('members.route: post', e)
+    red('members.route: post', e)
     res.status(400).send(e)
   }
 })

@@ -10,7 +10,6 @@ import {oneTestMember} from './test-users'
 import {fillMember, insertMembers, getMembers, clearMembers } from './member-utils'
 import Mongoose from 'mongoose'
 
-
 Mongoose.Promise = global.Promise
 
 require('dotenv').config()
@@ -22,7 +21,6 @@ const util = require('util')
 const setTimeoutPromise = util.promisify(setTimeout)
 
 before((done) => {
-  // yellow('BEFORE')
   Mongoose.connect(process.env.MONGODB_URI).then(() => {
     greenf('Mongoose connection: ', 'connected')
     done()
@@ -41,64 +39,110 @@ after(async () => {
 })
 
 describe('members test - start', () => {
-  describe('GET /members', async () => {
-    // Setup
+  describe('PATCH /members', () => {
+    let hexId
+    let firstName
     before(async () => {
       await clearMembers()
-      await insertMembers(2)
+      const members = await insertMembers(1)
+      firstName = members[0].firstName
+      const _id = members[0]._id
+      hexId = _id.toHexString()
     })
-    it('should get all members', (done) => {
-      request(app).get('/members').expect(200).expect((res) => {
-        expect(res.body.members.length).to.equal(2)
-      }).end(done)
-    })
-  })
-
-  describe('POST /members', async () => {
-    let members
-    before(async () => {
-      await clearMembers()
-      members = await getMembers(2)
-      // yellow('members', members)
-    })
-    it('should insert 2 members', async () => {
-
-      const res = await request(app).post('/members').send(members)
+    it('should update firstName', async () => {
+      const res = await request(app).delete(`/members/${hexId}`)
       expect(200)
-      // yellow('res', res.body)
-      expect(res.body.length).to.equal(2)
+      expect(res.body.member.firstName).to.equal(firstName)
     })
-    it('POST /members: should return bad request')
-    it('POST /members: should return request not found')
   })
 
+  describe('GET /members', () => {
+    // Setup
+    describe('Get all members', () => {
+      before(async () => {
+        await clearMembers()
+        await insertMembers(2)
+      })
+      it('should get all members', async () => {
+        const ret = await request(app).get('/members')
+        expect(200)
+        expect((ret) => {
+          expect(ret.body.members.length).to.equal(2)
+        })
+      })
+    })
+  })
 
+  describe('GET /members/:id', () => {
+    let hexId
+    before(async () => {
+      await clearMembers()
+      const ids = await insertMembers(1, { idsOnly: true })
+      hexId = ids[0].toHexString()
+      const res = await request(app).delete(`/members/${hexId}`)
+      expect(200)
+      expect(res.body.member._id).to.equal(hexId)
 
+    })
+    it('should get specified member', async () => {
+      const ret = await request(app).get('/members')
+      expect(200)
+      expect((ret) => {
+        expect(ret.body.members.length).to.equal(2)
+      })
+    })
+  })
+
+  describe('DELETE /members/:id', () => {
+    let hexId
+    before(async () => {
+      await clearMembers()
+      const ids = await insertMembers(1, { idsOnly: true })
+      const _id = ids[0]
+      hexId = _id.toHexString()
+    })
+    it('delete 1 member', async () => {
+      const res = await request(app).delete(`/members/${hexId}`).send(hexId)
+      expect(200)
+      expect(res.body.member._id).to.equal(hexId)
+
+    })
+  })
+
+  describe('POST /members', () => {
+    describe('Insert multiple members', () => {
+      let members
+      before(async () => {
+        await clearMembers()
+        members = await getMembers(2)
+      })
+      it('should insert 2 members', async () => {
+        const res = await request(app).post('/members').send(members)
+        expect(200)
+        expect(res.body.length).to.equal(2)
+      })
+    })
+    describe('Insert one member', () => {
+      let members
+      before(async () => {
+        await clearMembers()
+        members = await getMembers(1)
+      })
+      it('should insert 1 member', async () => {
+        const res = await request(app).post('/members').send(members)
+        expect(200)
+        expect(res.body.length).to.equal(1)
+      })
+    })
+    describe('Bad request', () => {
+      it('should return 400', async () => {
+        const badMember = {
+          someProperty: 'value'
+        }
+        const res = await request(app).post('/members').send(badMember)
+        expect(400)
+
+      })
+    })
+  })
 })
-
-
-// it('should insert 2 members', async () => {
-//   request(app).post('/members').send(await getMembers(1)).expect(200).expect((res) => {
-//     yellow('res', res.body)
-//     expect(res.body.members.length).to.equal(2)
-//   })
-// })
-
-// it('should get correct firstName', (done) => {
-//   request(app).post('/members').send(twoTestMembers[0]).expect(200).expect((res) => {
-//     expect(res.body.firstName).to.equal(twoTestMembers[0].firstName)
-//   }).end((err, res) => {
-//     if (err) {
-//       red(err)
-//       return done(err)
-//     }
-//     Member.find({firstName: twoTestMembers[0].firstName}).then((members) => {
-//       expect(members.length).to.equal(1)
-//       expect(members[0].firstName).to.equal(twoTestMembers[0].firstName)
-//       done()
-//     }).catch((e) => {
-//       console.log(e)
-//       done()
-//     })
-//   })
-// })

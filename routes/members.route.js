@@ -33,9 +33,14 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const members = req.body
+    let membersToAdd
     // blue('members.length', members.length)
-
-    const membersAdded = await Promise.all(members.map(async (m) => {
+    if (Array.isArray(members)) {
+      membersToAdd = members
+    } else {
+      membersToAdd = [members]
+    }
+    const membersAdded = await Promise.all(membersToAdd.map(async (m) => {
       // blue('m', m)
       let nm = new Member()
       nm.firstName = m.firstName
@@ -53,7 +58,7 @@ router.post('/', async (req, res) => {
     // blue('BEFORE SEND: membersAdded.length', membersAdded)
     res.send(membersAdded)
   } catch (e) {
-    red('members.route: post', e)
+    // red('members.route: post', e)
     res.status(400).send(e)
   }
 })
@@ -72,7 +77,6 @@ router.delete('/:id', async (req, res) => {
   } catch (e) {
     res.status(400).send()
   }
-
 })
 
 router.patch('/:id', async (req, res) => {

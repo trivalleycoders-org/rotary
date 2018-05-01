@@ -1,16 +1,19 @@
-import { greenf } from '../logger'
+import { greenf, yellow } from '../logger'
 require('dotenv').config()
 
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV
 
+if (!env) {
+  process.env.NODE_ENV = 'development'
 
-// console.log('**dev**', process.env.MONGOD_URI_DEV)
-if(env === 'development') {
-  greenf(' environment = dev ')
+}
+
+if(process.env.NODE_ENV === 'development') {
+  greenf('environment = ', process.env.NODE_ENV)
   process.env.PORT = 3001
   process.env.MONGODB_URI = process.env.MONGOD_URI_DEV
-} else if(env === 'test') {
-  greenf(' environment = test ')
+} else if(process.env.NODE_ENV === 'test') {
+  greenf('environment = ', process.env.NODE_ENV)
   process.env.PORT = 3001
   process.env.MONGODB_URI = process.env.MONGOD_URI_TEST
 }

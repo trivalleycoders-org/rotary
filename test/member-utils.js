@@ -15,8 +15,8 @@ export const fillMember = (model, data) => {
   return m
 }
 
-const makeUsers = (num) => {
-  let users = []
+const makeMembers = (num) => {
+  let members = []
   for (let i=0; i<num; i++) {
     let firstName = `First-${i}`
     let lastName = `Last-${i}`
@@ -25,7 +25,7 @@ const makeUsers = (num) => {
       phoneType: 'Mobile',
       phoneNumber: `${i}${i}${i}-${i}${i}${i}-${i}${i}${i}${i}`
     }
-    let user = {
+    let member = {
       _id: new ObjectID(),
       firstName,
       lastName,
@@ -33,15 +33,24 @@ const makeUsers = (num) => {
       email,
       phone,
     }
-    users.push(user)
+    members.push(member)
+
   }
-  return users
+  // blue('1) members.length', members.length)
+  return members
 }
 
-export const insertMembers = async (num) => {
+export const insertMembers = async (num, options = {}) => {
   try {
-    const users = await makeUsers(num)
-    let result = await Member.insertMany(users)
+    const members = await makeMembers(num)
+    let res = await Member.insertMany(members)
+    if (options.idsOnly) {
+      const ids = res.map((m) => m._id)
+      return ids
+    } else {
+      return res
+    }
+
   }
   catch (e) {
     console.log('ERROR inserting members', e)
@@ -50,7 +59,7 @@ export const insertMembers = async (num) => {
 
 export const getMembers = async (num) => {
   try {
-    return makeUsers(num)
+    return makeMembers(num)
 
   }
   catch (e) {

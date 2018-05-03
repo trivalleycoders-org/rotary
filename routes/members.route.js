@@ -1,5 +1,4 @@
 import express from 'express'
-// import memberController from '../controllers/members.controller'
 const router = express.Router()
 import Member from '../models/member'
 import { isValidObjectID } from '../db/utils'

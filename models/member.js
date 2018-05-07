@@ -1,19 +1,15 @@
 import mongoose from 'mongoose'
 
-// const memberSchema = mongoose.Schema({
-//     firstName: String,
-//
+// let roleSchema = new mongoose.Schema({
+//   name: {
+//     name: String,
+//     required: true,
+//   },
+//   avoid: {
+//     type: Boolean,
+//     default: false,
+//   }
 // })
-//
-// let Member = mongoose.model('Member', memberSchema)
-
-let roleSchema = new mongoose.Schema({
-  roleId: String,
-  notPreferred: {
-    type: Boolean,
-    default: false,
-  }
-})
 
 let phoneSchema = new mongoose.Schema({
   phoneType: {
@@ -39,7 +35,7 @@ const memberSchema = new mongoose.Schema({
     trim: true
   },
   comments: {
-    type: [String]
+    type: String
   },
   email: {
     type: String,
@@ -51,8 +47,8 @@ const memberSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-    phone: [phoneSchema],
-    avoidRoles: [],
+  phone: [phoneSchema],
+  roles: [],
 })
 
 let Member = mongoose.model('Member', memberSchema)

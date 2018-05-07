@@ -45,9 +45,10 @@ router.post('/', async (req, res) => {
       nm.firstName = m.firstName
       nm.lastName = m.lastName
       nm.email = m.email
-      m.comments && nm.comments.push(...m.comments)
+      nm.comments = m.comments
       m.phone && nm.phone.push(...m.phone)
-      m.avoidRoles && nm.avoidRoles.push(...m.avoidRoles)
+      m.roles && nm.roles.push(...m.roles)
+      nm.exempt = m.exempt
       // blue('nm', nm)
       let doc = await nm.save()
       // blue('doc', doc)

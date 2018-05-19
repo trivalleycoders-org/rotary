@@ -80,18 +80,21 @@ router.delete('/:id', async (req, res) => {
 })
 
 router.patch('/:id', async (req, res) => {
+
   try {
     const id = req.params.id
+    yellow('patch: id', id)
     if (!isValidObjectID(id)) {
       return res.status(404).send()
     }
-    const body = req.body
-    const member = await Member.findByIdAndUpdate(id, { $set: body }, { new: true })
-
-    if (!member) {
+    const memberSent = req.body.member
+    yellow('patch: body', req.body)
+    const memberToReturn = await Member.findByIdAndUpdate(id, { $set: memberSent }, { new: true })
+    yellow('patch: returned member', memberToReturn)
+    if (!memberToReturn) {
       return res.status(404).send()
     }
-    res.send(member)
+    res.send(memberToReturn)
   } catch (e) {
     res.status(400).send()
   }

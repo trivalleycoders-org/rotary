@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
       nm.lastName = m.lastName
       nm.email = m.email
       nm.comments = m.comments
-      m.phone && nm.phone.push(...m.phone)
+      m.phones && nm.phones.push(...m.phone)
       m.roles && nm.roles.push(...m.roles)
       nm.exempt = m.exempt
       // blue('nm', nm)

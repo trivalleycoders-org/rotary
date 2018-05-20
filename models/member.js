@@ -47,7 +47,7 @@ const memberSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  phone: [phoneSchema],
+  phones: [phoneSchema],
   roles: [],
 })
 

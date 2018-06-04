@@ -14,7 +14,7 @@
     "lint": "eslint ."
   },
   "engines": {
-    "node": "8.11.1"
+    "node": "^8.11.1"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
     "cors": "2.8.4",
     "dotenv": "5.0.1",
     "express": "4.14.0",
-    "mongoose": "5.0.15"
+    "mongoose": "5.0.15",
+    "ramda": "^0.25.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",

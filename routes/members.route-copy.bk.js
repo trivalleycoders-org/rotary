@@ -32,12 +32,41 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const member = req.body
-    yellow('post: member', member)
-    let nm = new Member(member)
-    const memberAdded = await nm.save()
-    yellow('memberAdded', memberAdded)
-    res.send(memberAdded)
+    const members = req.body
+    // yellow('post: body', req.body)
+
+    // let  = []
+    // blue('members.length', members.length)
+    // if (Array.isArray(members)) {
+    //   append(members, membersToAdd)
+    // } else {
+    //   append(members, membersToAdd)
+    // }
+    yellow('membersToAdd-pre', membersToAdd)
+    yellow('post: members', members)
+    const membersToAdd = append(members, [])
+    yellow('membersToAdd-post', membersToAdd)
+
+    const membersAdded = await Promise.all(membersToAdd.map(async (m) => {
+      // blue('m', m)
+      let nm = new Member()
+      yellow('phones?', m.phones && 'yes')
+      nm.firstName = m.firstName
+      nm.lastName = m.lastName
+      nm.email = m.email
+      nm.comments = m.comments
+      m.phones && nm.phones.push(...m.phone)
+      m.roles && nm.roles.push(...m.roles)
+      nm.exempt = m.exempt
+      // blue('nm', nm)
+      yellow('nm', nm)
+      let doc = await nm.save()
+      // blue('doc', doc)
+      return nm
+    }))
+
+    // blue('BEFORE SEND: membersAdded.length', membersAdded)
+    res.send(membersAdded)
   } catch (e) {
     // red('members.route: post', e)
     red('error', e)

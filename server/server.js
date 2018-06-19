@@ -6,7 +6,7 @@ import {green, greenf, yellow} from '../logger'
 import {connectToMongo, disconnectFromMongo} from '../db'
 import members from '../routes/members.route'
 import roles from '../routes/roles.route'
-import config from '../config'
+import '../config'
 
 // green('node env=', process.env.NODE_ENV)
 const app = express()
